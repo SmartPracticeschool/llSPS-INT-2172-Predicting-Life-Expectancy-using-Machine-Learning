@@ -1,0 +1,351 @@
+[
+    {
+        "id": "d809bc7e.3cbeb",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4578c21b.d2b33c",
+        "type": "ui_form",
+        "z": "d809bc7e.3cbeb",
+        "name": "",
+        "label": "",
+        "group": "d17b63e6.076c4",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Country",
+                "value": "a",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Year",
+                "value": "b",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Status",
+                "value": "c",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Adult Mortality",
+                "value": "d",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Hepatitis B",
+                "value": "e",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Measles",
+                "value": "f",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "BMI",
+                "value": "j",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Polio",
+                "value": "k",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Total Expenditure",
+                "value": "l",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Diphtheria",
+                "value": "m",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "HIV/AIDS",
+                "value": "n",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Thinness 1-19 years",
+                "value": "g",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Income composition of resources",
+                "value": "h",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Schooling",
+                "value": "i",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "a": "",
+            "b": "",
+            "c": "",
+            "d": "",
+            "e": "",
+            "f": "",
+            "j": "",
+            "k": "",
+            "l": "",
+            "m": "",
+            "n": "",
+            "g": "",
+            "h": "",
+            "i": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "",
+        "x": 110,
+        "y": 280,
+        "wires": [
+            [
+                "778aa232.8ed56c",
+                "ed706ccb.fd179"
+            ]
+        ]
+    },
+    {
+        "id": "778aa232.8ed56c",
+        "type": "function",
+        "z": "d809bc7e.3cbeb",
+        "name": "pre token",
+        "func": "global.set(\"a\",msg.payload.a);\nglobal.set(\"b\",msg.payload.b);\nglobal.set(\"c\",msg.payload.c);\nglobal.set(\"d\",msg.payload.d);\nglobal.set(\"e\",msg.payload.e);\nglobal.set(\"f\",msg.payload.f);\nglobal.set(\"g\",msg.payload.g);\nglobal.set(\"h\",msg.payload.h);\nglobal.set(\"i\",msg.payload.i);\nglobal.set(\"j\",msg.payload.j);\nglobal.set(\"k\",msg.payload.k);\nglobal.set(\"l\",msg.payload.l);\nglobal.set(\"m\",msg.payload.m);\nglobal.set(\"n\",msg.payload.n);\n\nvar apikey = \"NWgpWYuKKleCQh877WmlPfZSmY4Iw-3d3bmjSpvLrRue\";\nmsg.headers = {\"Content-Type\":\"application/x-www-form-urlencoded\"};\nmsg.payload = {\"grant_type\":\"urn:ibm:params:oauth:grant-type:apikey\",\"apikey\":apikey};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 330,
+        "y": 260,
+        "wires": [
+            [
+                "18be6d3.c976d93",
+                "4b7ca46c.33cd2c"
+            ]
+        ]
+    },
+    {
+        "id": "18be6d3.c976d93",
+        "type": "http request",
+        "z": "d809bc7e.3cbeb",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://iam.cloud.ibm.com/identity/token",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 490,
+        "y": 160,
+        "wires": [
+            [
+                "9bdac00.28eb64",
+                "37161a23.70a686"
+            ]
+        ]
+    },
+    {
+        "id": "9bdac00.28eb64",
+        "type": "function",
+        "z": "d809bc7e.3cbeb",
+        "name": "Life Expectancy",
+        "func": "var token = msg.payload.access_token;\nvar instance_id= \"ed737bfd-0967-4aa2-9839-59cbca57d914\"\nmsg.headers = {'Content-Type': 'application/json',\"Authorization\":\"Bearer \"+token,\"ML-Instance-ID\":instance_id}\n\nvar a = global.get(\"a\");\nvar b = global.get(\"b\");\nvar c = global.get(\"c\");\nif(c==\"Developing\"){c=0;}\nelse if(c==\"Developed\"){c=1;}\nvar d = global.get(\"d\");\nvar e = global.get(\"e\");\nvar f = global.get(\"f\");\nvar g = global.get(\"g\");\nvar h = global.get(\"h\");\nvar i = global.get(\"i\");\nvar j = global.get(\"j\");\nvar k = global.get(\"k\");\nvar l = global.get(\"l\");\nvar m = global.get(\"m\");\nvar n = global.get(\"n\");\n\nmsg.payload = {'fields': ['year', 'status', 'adult_mortality', 'hepatitis_b',\n       'measles', 'bmi', 'polio', 'total_expenditure', 'diphtheria',\n       'hiv/aids', 'thinness_10-19_years', 'income_composition_of_resources',\n       'schooling'],'values': [[b,c,d,e,f,g,h,i,j,k,l,m,n]]};\n       \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 620,
+        "y": 300,
+        "wires": [
+            [
+                "82e2b314.b4972",
+                "9523d140.905bd"
+            ]
+        ]
+    },
+    {
+        "id": "82e2b314.b4972",
+        "type": "http request",
+        "z": "d809bc7e.3cbeb",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": false,
+        "url": "https://eu-gb.ml.cloud.ibm.com/v3/wml_instances/ed737bfd-0967-4aa2-9839-59cbca57d914/deployments/330c1f2d-b4fb-436e-a713-2ee5d3fe845a/online",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 680,
+        "y": 400,
+        "wires": [
+            [
+                "7ea977a6.17b328",
+                "d5558c26.0eb3b"
+            ]
+        ]
+    },
+    {
+        "id": "7ea977a6.17b328",
+        "type": "function",
+        "z": "d809bc7e.3cbeb",
+        "name": "",
+        "func": "msg.payload = msg.payload.values[0][0];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 820,
+        "y": 260,
+        "wires": [
+            [
+                "f2c53433.64af58"
+            ]
+        ]
+    },
+    {
+        "id": "f2c53433.64af58",
+        "type": "ui_text",
+        "z": "d809bc7e.3cbeb",
+        "group": "d17b63e6.076c4",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Prediction",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 960,
+        "y": 340,
+        "wires": [],
+        "icon": "node-red/arrow-in.svg"
+    },
+    {
+        "id": "d5558c26.0eb3b",
+        "type": "debug",
+        "z": "d809bc7e.3cbeb",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 880,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "9523d140.905bd",
+        "type": "debug",
+        "z": "d809bc7e.3cbeb",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 720,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "37161a23.70a686",
+        "type": "debug",
+        "z": "d809bc7e.3cbeb",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 680,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "4b7ca46c.33cd2c",
+        "type": "debug",
+        "z": "d809bc7e.3cbeb",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 400,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "ed706ccb.fd179",
+        "type": "debug",
+        "z": "d809bc7e.3cbeb",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 180,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "d17b63e6.076c4",
+        "type": "ui_group",
+        "z": "",
+        "name": "Life Expectancy",
+        "tab": "16086644.3a266a",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "16086644.3a266a",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
